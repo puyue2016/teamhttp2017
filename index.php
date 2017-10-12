@@ -24,18 +24,18 @@
 <div id="header" class="wrap">
 	<div id="logo"><img width="100%" height="100%" src="images/logo.png" /></div>
 	<div class="help">
-	  <a href="shopping.html" id="shoppingBag" class="shopping">Shopping Cart</a>
+	  <a href="shopping.php" id="shoppingBag" class="shopping">Shopping Cart</a>
    	  	<div id="text-login">
    	  	<?php
 	   	  	session_start();
 	   	  	if(is_null($_SESSION["user_name"])){
    	  	?>
-		   	  	<a href="login.html" id="login">登陆</a><span id="username"></span>
+		   	  	<a href="login.html" id="login">Login</a><span id="username"></span>
 		 	  	<a href="register.html">Register</a>
 	 	<?php
 	 	  	}else{
  	  	?>
-	   	  		<a href="">welcome <?php session_start();echo $_SESSION["user_name"];?></a>
+	   	  		<a href="">welcome,<?php session_start();echo $_SESSION["user_name"];?></a>
    	  	<?php
    	  		}
    	  	?>

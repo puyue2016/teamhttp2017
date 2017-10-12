@@ -6,6 +6,7 @@
 <link type="text/css" rel="stylesheet" href="css/style.css" />
 <script type="text/javascript" src="scripts/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="scripts/function.js"></script>
+<script type="text/javascript" src="scripts/cookie.js"></script>
 </head>
 <body>
 <div id="header" class="wrap">
@@ -43,15 +44,17 @@
 					<tr>
 						<td class="field">USER NAME：</td>
 						<td>
+<!--              id             login-tel》》》》username-->
                             <input class="text" type="text" id="username" name="username" />
-							<span></span>
+							<span id="tel-warn"></span>
 						</td>
 					</tr>
 					<tr>
 						<td class="field">PASS WORD：</td>
 						<td>
+<!--               id            login-key》》》password-->
                             <input class="text" type="password" id="password" name="Password" />
-							<span></span>
+							<span id="key-warn"></span>
 						</td>
 					</tr>
 					
@@ -59,9 +62,10 @@
 						<td></td>
 						<td>
 <!--						<label class="ui-green"><input type="submit" name="submit" value="LOG IN" /></label>-->
-<!--						<botton onclick="login()">登录</botton>-->
-							<botton class="ui-green" onclick="login()"><input type="submit" name="submit" value="LOG IN" /></botton>
-						
+<!--						<botton onclick="login()">登录</botton>
+<!--							<botton class="ui-green" onclick="login()"><input type="submit" name="submit" value="LOG IN" /></botton>-->
+								<input type="submit" id="login-btn" name="submit" value="登陆">
+           						<input type="checkbox" id="auto-login" name="" value="checked">七天免登录
 						</td>
 					</tr>
 				</table>
@@ -74,19 +78,94 @@
     Copyright &copy; 2017 筑波大学　Team HTTP All Rights Reserved. 
 </div>
 </body>
-	
+<script type="text/javascript">
+var oTel = document.getElementById("uername");
+var oKey = document.getElementById("password");
+var oLbtn = document.getElementById("login-btn");
+var oTelwarn = document.getElementById("tel-warn");
+var oKeywarn = document.getElementById("key-warn");
+var oAutologin = document.getElementById("auto-login");
+//var reg = /^1[34578]\d{9}$/ //11位手机号
+//var reg = /^\d{11}$/ //修改版11位任意数字  因为要对应日本手机号
+var reg = /^[a-zA-Z0-9_\u4e00-\u9fa5\u0800-\u4e00\uac00-\ud7ff]{3,10}$/   //尝试 电话号码改成用户名
+var reg2 = /^\w{6,12}$/ //  字母数字下划线
+//var reg2 = /^[\w-\s]+$/ //修改版  只能输入数字，英文字母，下划线，中划线，和空格
+
+//增加失焦事件，用正则去判断（2）
+oTel.onblur = fnTel; //正则判断
+oKey.onblur = fnKey; //正则判断
+
+    
+oLbtn.onclick = function() {
+       //点击登陆时，增加正则去判断（3）
+       if (!(fnTel()&fnKey())) {
+          return;
+       }
+        //去判断这两个和库中是否相同 oTel.value  oKey.value;
+        if (getCookie("bank")) { 
+            var arrBank = getCookie("bank").split("&");
+            var boo = false;
+            for (var i = 0; i < arrBank.length; i++) {
+                var obj = convertCartStrToObj(arrBank[i]);
+                if (oTel.value == obj.tel) {//通过对象.属性的方法获取手机号，并与文本框输入对比（3）
+                     if(oKey.value == obj.key){  //通过对象.属性的方法获取密码，并与文本框输入对比（4）
+                        alert("登陆成功")
+
+                        if (oAutologin.checked == true) {//增加7天免登录功能（5）
+                           var  iDay = 7;
+                        }else{
+                            var  iDay ="0";
+                        }
+                        createCookie("user", arrBank[i] ,  setCookieDate(iDay) );
+                        window.location.href = "index.html";
+                        return;
+                     }else{
+                        alert("密码错误")
+                        oKey.innerHTMl = "";
+                        return;
+                     }
+                 var boo = true;
+                }
+            }
+            alert("这个用户不存在");
+        }
+    }
+//把正则判断的函数封装起来(1)
+function fnTel() {
+    if (reg.test(oTel.value)) {
+        oTelwarn.innerHTML = "";
+        oTelwarn.style.color = "green"
+        return true;
+    } else {
+        oTelwarn.innerHTML = "X请输入11位手机号";
+        oTel.value = "";
+        oTelwarn.style.color = "red"
+    }
+
+}
+ function fnKey() {
+    if (reg2.test(oKey.value)) {
+        oKeywarn.innerHTML = "";
+        oKeywarn.style.color = "green";
+        return true;
+    } else {
+        oKeywarn.innerHTML = "X请输入6-12位字母数字下划线";
+        oKeywarn.value = "";
+        oKeywarn.style.color = "red"
+    }
+}
+//前面封装好的函数拷过来
+function convertCartStrToObj(cartStr) {
+    var obj = {};
+    //将字符串name:17dian,key:123456,tel:18810701077 按“,”拆分成数组["name:17dian", "key:123456", "tel:18810701077"]
+    var arrVal = cartStr.split(",");
+    for (var i = 0; i < arrVal.length; i++) {
+        data = arrVal[i].split(":"); // 在将每一项拆分 例如arrVal[0]时 data =["name", "17dian"]
+        console.log(data)
+        obj[data[0]] = data[1]; //给对象添加属性
+    }
+    return obj;
+}
+</script>
 </html>
 
-<script type="text/javascript">
-   		function login(){
-       		var username = document.getElementById('username').value;
-       		var password = document.getElementById('password').value;
-       		// 用户名和密码都不为空
-       		if(username&&password){
-				localStorage.username = username;
-           		var url = location.search.split("=")[1];
-           		location.href = url; //从地址栏获取返回地址，实现跳转
-       		}
-
-   		}
-</script>

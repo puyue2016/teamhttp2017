@@ -12,8 +12,21 @@
     <div id="logo"><img width="100%" height="100%" src="images/logo.png" /></div>
     <div class="help">
         <a href="shopping.html" id="shoppingBag" class="shopping">Shopping Cart</a>
-        <a href="login.html">LogIn</a>
-        <a href="register.html">Register</a>
+        
+        <?php
+	   	  	session_start();
+	   	  	if(is_null($_SESSION["user_name"])){
+   	  	?>
+		   	  <a href="login.html">LogIn</a>
+             <a href="register.html">Register</a>
+	 	<?php
+	 	  	}else{
+ 	  	?>
+	   	  		<a href="">welcome,<?php session_start();echo $_SESSION["user_name"];?></a>
+   	  	<?php
+   	  		}
+   	  	?>
+        
         <a class="button" id="logout" href="javascript:void(0);">LogOut</a>
         <a href="guestbook.html">Message</a>
         <a href="manage/index.html">Management</a>

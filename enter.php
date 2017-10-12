@@ -6,7 +6,7 @@
 </head> 
 <body> 
   <?php 
-    session_start();//登录系统开启一个session内容 
+    session_start();
     $userna=$_REQUEST["username"];
     $pass=$_REQUEST["Password"]; 
   
@@ -34,26 +34,27 @@
     if (is_null($dbusername)) {
   ?> 
   <script type="text/javascript"> 
-    alert("用户名不存在"); 
-   window.location.href="iroza1/index.html"; 
+    alert("Username does not exist"); 
+   window.location.href="login.html"; 
   </script> 
   <?php 
     } 
     else { 
-      if ($dbpassword!=$pass){//当对应密码不对时跳回index.html界面 
+      if ($dbpassword!=$pass){
   ?> 
   <script type="text/javascript"> 
     alert("密码错误"); 
-    window.location.href="iroza1/index.html"; 
+    window.location.href="login.html"; 
   </script> 
   <?php 
       } 
       else { 
         $_SESSION["user_name"]=$userna; 
-        $_SESSION["code"]=mt_rand(0, 100000);//给session附一个随机值，防止用户直接通过调用界面访问welcome.php 
+        $_SESSION["code"]=mt_rand(0, 100000);
+        require('../loginJSON.php');
   ?> 
   <script type="text/javascript"> 
-    window.location.href="iroza1/index.html"; 
+    window.location.href="../welcome.php"; 
   </script> 
   <?php 
       } 

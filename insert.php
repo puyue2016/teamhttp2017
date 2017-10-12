@@ -8,7 +8,7 @@
 </head>
 <body>
 <div id="header" class="wrap">
-    <div id="logo"><img width="100%" height="100%" src="images/logo.png" /></div>
+
     <div class="help"><a href="shopping.html" id="shoppingBag" class="shopping">Shopping Cart</a><a href="login.html">LogIn</a><a class="button" id="logout" href="javascript:void(0);">LogOut</a><a href="register.html">Register</a><a href="guestbook.html">Message</a><a href="manage/index.html">Management</a></div>
     <div class="navbar">
         <ul class="clearfix">
@@ -69,6 +69,13 @@
         			$userpw=$_POST['confirmPassword'];
         			$mail=$_POST['email'];
         			$sex=$_POST['sex'];
+        			if($userna==""||$userpw=="")//Not empty
+                        {
+                          echo"<script type="."\""."text/javascript"."\"".">"."window.alert"."("."\""."Please fill in the completed！"."\"".")".";"."</script>";
+                          echo"<script type="."\""."text/javascript"."\"".">"."window.location="."\""."iroza1/register.html"."\""."</script>";    
+                          exit;
+                        }
+
         			$sql="insert into user_register(user_name,user_password,user_mail,user_sex) values('$userna','$userpw','$mail','$sex')";
         		
         		$res=mysqli_query($db,$sql);
