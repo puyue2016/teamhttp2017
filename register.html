@@ -43,29 +43,26 @@
 				<li class="current"><em></em>Fill In The Information</li>
 				<li class="last"><em></em>Registration Success</li>
 			</ul>
-			<form id="regForm" method="post" action="reg-result.html" >
+			<form id="regForm" method="post" action="insert.php" >
 				<table>
 					<tr>
-						<td class="field">USER NAME(*)：</td>
+						<td class="field">USER NAME：</td>
 						<td>
-							<input class="text" type="text" name="userId"  id="userId" maxlength="10"  />
+							<input class="text" type="text" name="username"  id="username" maxlength="10"  />
 							<span></span>
 						</td>
 					</tr>
+					
 					<tr>
-						<td class="field">REAL NAME(*)：</td>
-						<td><input class="text" type="text" name="userName" /><span></span></td>
-					</tr>
-					<tr>
-						<td class="field">PASSWORD(*)：</td>
+						<td class="field">PASSWORD：</td>
 						<td><input class="text" type="password" id="password" name="password" /><span></span></td>
 					</tr>
 					<tr>
-						<td class="field">Confirm Password(*)：</td>
+						<td class="field">Confirm Password：</td>
 						<td><input class="text" type="password" name="confirmPassword" /><span></span></td>
 					</tr>
 					<tr>
-						<td class="field">Gender(*)：</td>
+						<td class="field">Gender：</td>
 						<td>
 						  <input class="radio" type="radio" name="sex" value="male" checked="checked">
 						  Male</input>
@@ -77,22 +74,13 @@
 						<td class="field">Date of birth：</td>
 						<td><input id="birthday" class="text" type="text" name="birthday" /><span></span></td>
 					</tr>
-					<tr>
-						<td class="field">ID：</td>
-						<td><input class="text" type="text" name="identityCode" /><span></span></td>
-					</tr>
+					
 					<tr>
 						<td class="field">Mail：</td>
 						<td><input class="text" type="text" name="email" /><span></span></td>
 					</tr>
-					<tr>
-						<td class="field">Phone(*)：</td>						
-						<td><input class="text" type="text" name="mobile" /><span></span></td>
-					</tr>
-					<tr>
-						<td class="field">Address(*)：</td>
-						<td><input class="text" type="text" name="address" /><span></span></td>
-					</tr>
+					
+					
 					<tr>
 						<td></td>
 						<td><label class="ui-green"><input type="submit" name="submit" value="Submit" /></label></td>
@@ -107,4 +95,18 @@
     Copyright &copy; 2017 筑波大学　Team HTTP All Rights Reserved. 
 </div>
 </body>
+
 </html>
+<script type="text/javascript">
+   function login(){
+       var username = document.getElementById('username').value;
+       var password = document.getElementById('password').value;
+       // 用户名和密码都不为空
+       if(username&&password){
+           localStorage.username = username;
+           var url = location.search.split("=")[1];
+           location.href = url; //从地址栏获取返回地址，实现跳转
+       }
+
+   }
+</script>

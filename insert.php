@@ -1,4 +1,3 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -37,56 +36,58 @@
 		<em class="corner lb"></em>
 		<em class="corner rt"></em>
 		<div class="box">
-			<h1>WELCOME IROZA</h1>
-			<form id="loginForm" method="post" action="enter.php" >
-				<table>
-					<tr>
-						<td class="field">USER NAME：</td>
-						<td>
-                            <input class="text" type="text" id="username" name="username" />
-							<span></span>
-						</td>
-					</tr>
-					<tr>
-						<td class="field">PASS WORD：</td>
-						<td>
-                            <input class="text" type="password" id="password" name="Password" />
-							<span></span>
-						</td>
-					</tr>
-					
-					<tr>
-						<td></td>
-						<td>
-<!--						<label class="ui-green"><input type="submit" name="submit" value="LOG IN" /></label>-->
-<!--						<botton onclick="login()">登录</botton>-->
-							<botton class="ui-green" onclick="login()"><input type="submit" name="submit" value="LOG IN" /></botton>
-						
-						</td>
-					</tr>
-				</table>
-			</form>
+			<h1>WELCOME TO IROZA</h1>
+			<ul class="steps clearfix">
+				<li class="finished"><em></em>Fill In The Information</li>
+				<li class="last-current"><em></em>Registration Success</li>
+			</ul>
+			<div class="msg">
+				<p>Congratulations: successful registration！</p>
+				<p>Loding...</p>
+				<script type="text/javascript">
+					setTimeout("location.href='index.html'", 3000);
+				</script>
+			</div>
 		</div>
 	</div>
-	<div class="clear"></div>
 </div>
+        <?php
+        $servername = getenv('IP');
+            $username = getenv('C9_USER');
+            $password = "";
+            $database = "c9";
+            $dbport = 3306;
+        
+            // Create connection
+            $db = new mysqli($servername, $username, $password, $database, $dbport);
+        
+            // Check connection
+            if ($db->connect_error) {
+                die("Connection failed: " . $db->connect_error);
+            }else{ 
+                	$userna=$_POST['username'];
+        			$userpw=$_POST['confirmPassword'];
+        			$mail=$_POST['email'];
+        			$sex=$_POST['sex'];
+        			$sql="insert into user_register(user_name,user_password,user_mail,user_sex) values('$userna','$userpw','$mail','$sex')";
+        		
+        		$res=mysqli_query($db,$sql);
+        		if($res==true){
+        			echo "<<script type='text/javascript'>alert('success');</script>>";
+        		}else{
+        			echo "<script type='text/javascript'>alert('failed');</script>".$sql;
+        		}
+        		
+        	}
+            mysqli_close($db);
+        ?>
+
 <div id="footer">
     Copyright &copy; 2017 筑波大学　Team HTTP All Rights Reserved. 
 </div>
 </body>
-	
 </html>
 
-<script type="text/javascript">
-   		function login(){
-       		var username = document.getElementById('username').value;
-       		var password = document.getElementById('password').value;
-       		// 用户名和密码都不为空
-       		if(username&&password){
-				localStorage.username = username;
-           		var url = location.search.split("=")[1];
-           		location.href = url; //从地址栏获取返回地址，实现跳转
-       		}
 
-   		}
-</script>
+
+
